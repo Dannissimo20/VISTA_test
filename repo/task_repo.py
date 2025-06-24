@@ -53,3 +53,12 @@ class Task:
             session.execute(query)
             print(f"Task {task_id} deleted")
             session.commit()
+
+
+    def mark_checked(self, task_id: str):
+        query = update(self._table).where(self._table.id == task_id).values(checked=True)
+        with self.db.session() as session:
+            session.execute(query)
+            print(f"Task {task_id} checked")
+            session.commit()
+

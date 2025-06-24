@@ -54,3 +54,13 @@ async def delete_task(task_id: str, task_repo: Task = Depends(get_task_repo)):
     except Exception as e:
         print(e)
         raise HTTPException(500, "InternalServerError")
+    
+
+@app.put("/mark_checked")
+async def mark_checked(task_id: str, task_repo: Task = Depends(get_task_repo)):
+    try:
+        task_repo.mark_checked(task_id)
+        return 200
+    except Exception as e:
+        print(e)
+        raise HTTPException(500, "InternalServerError")
