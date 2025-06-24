@@ -43,5 +43,5 @@ class Task:
         query = update(self._table).where(self._table.id == task_id).values(**task_data)
         with self.db.session() as session:
             session.execute(query)
-            print(f"Task {self._table.id} updated")
+            print(f"Task {task_id} updated")
             session.commit()
