@@ -1,9 +1,8 @@
 from typing import Type
-
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, update
 from database.database import DBWriter
 from models.task_model import TaskModel
-from schemas.task_schemas import TaskIn, TaskOut
+from schemas.task_schemas import TaskIn, TaskOut, TaskUpdate
 
 
 class Task:
@@ -36,4 +35,13 @@ class Task:
         with self.db.session() as session:
             session.execute(query)
             print("Task created")
+            session.commit()
+    
+
+    def update_task(self, task_id: str, task: TaskUpdate):
+        task_data = task.model_dump(exclude_unset=True)
+        query = update(self._table).where(self._table.id == task_id).values(**task_data)
+        with self.db.session() as session:
+            session.execute(query)
+            print(f"Task {self._table.id} updated")
             session.commit()

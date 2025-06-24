@@ -2,7 +2,7 @@ from fastapi import Depends, FastAPI, HTTPException
 
 from database.database import Base, DBWriter
 from repo.task_repo import Task
-from schemas.task_schemas import TaskIn, TaskOut
+from schemas.task_schemas import TaskIn, TaskOut, TaskUpdate
 
 
 app = FastAPI()
@@ -30,6 +30,16 @@ async def get_by_id(task_id: str, task_repo: Task = Depends(get_task_repo)):
 async def add_task(task: TaskIn, task_repo: Task = Depends(get_task_repo)):
     try:
         task_repo.add_task(task)
+        return 200
+    except Exception as e:
+        print(e)
+        raise HTTPException(500, "InternalServerError")
+    
+
+@app.put("/update_task")
+async def update_task(task_id: str, task_data: TaskUpdate, task_repo: Task = Depends(get_task_repo)):
+    try:
+        task_repo.update_task(task_id, task_data)
         return 200
     except Exception as e:
         print(e)
