@@ -1,5 +1,5 @@
 from typing import Type
-from sqlalchemy import insert, select, update
+from sqlalchemy import delete, insert, select, update
 from database.database import DBWriter
 from models.task_model import TaskModel
 from schemas.task_schemas import TaskIn, TaskOut, TaskUpdate
@@ -44,4 +44,12 @@ class Task:
         with self.db.session() as session:
             session.execute(query)
             print(f"Task {task_id} updated")
+            session.commit()
+
+    
+    def delete_task(self, task_id: str):
+        query = delete(self._table).where(self._table.id == task_id)
+        with self.db.session() as session:
+            session.execute(query)
+            print(f"Task {task_id} deleted")
             session.commit()

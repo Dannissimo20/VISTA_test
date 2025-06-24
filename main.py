@@ -44,3 +44,13 @@ async def update_task(task_id: str, task_data: TaskUpdate, task_repo: Task = Dep
     except Exception as e:
         print(e)
         raise HTTPException(500, "InternalServerError")
+    
+
+@app.delete("/delete_task")
+async def delete_task(task_id: str, task_repo: Task = Depends(get_task_repo)):
+    try:
+        task_repo.delete_task(task_id)
+        return 200
+    except Exception as e:
+        print(e)
+        raise HTTPException(500, "InternalServerError")
